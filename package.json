@@ -1,0 +1,19 @@
+{
+  "name": "botnea",
+  "version": "1.0.0",
+  "description": "bot comercial",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bot",
+    "market",
+    "tienda",
+    "pymes",
+    "negocios",
+    "produccion"
+  ],
+  "author": "Alfa 12",
+  "license": "ISC"
+}
