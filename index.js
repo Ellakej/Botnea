@@ -1,6 +1,14 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var ngrok = require('ngrok');
+var json = require('./db.json');
+
+var falsaBD = [
+    5,
+    10,
+    80
+]
+
 
 // Creacion del servidor
 var app = express();
@@ -18,8 +26,9 @@ app.use(bodyParser.json());
 // post request usando webhook
 app.post('/', function (req, res){
 console.log(req.body)
-    // Query de las actions, si la action es "suma" entonces...
-    if (req.body.queryResult.intent.displayName == "suma"){
+
+// Manipulacion del intent suma
+if (req.body.queryResult.intent.displayName == "suma"){
         
         // Query de los numeros
         // Se necesita parsear a tipo flotante (talvez llega en tipo objeto)
@@ -37,6 +46,7 @@ console.log(req.body)
         });
     }
 
+// Manipulacion del intent cantidad
 if (req.body.queryResult.intent.displayName == "cantidad"){
         
         // Query de los numeros
@@ -55,8 +65,21 @@ if (req.body.queryResult.intent.displayName == "cantidad"){
         });
     }
 
+// Manipulacion del intent consultaProducto
 
+if (req.body.queryResult.intent.displayName == "consultaProducto"){
 
+    //let producto = String(req.body.queryResult.parameters.producto);
+    let costo = parseFloat(falsaBD[0]);
+
+    // Output
+    response = costo;
+    console.log(response);
+    res.json({
+        "fulfillmentText": response
+    });
+    
+}
 
 });
 
