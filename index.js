@@ -1,6 +1,67 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var ngrok = require('ngrok');
+var json = require('./db.json');
+
+var falsaBD = {
+    productos: [
+        {
+            producto: "papas",
+            precio: 5
+        },
+        {
+            producto: "mazapanes",
+            precio: 10
+        },
+        {
+            producto: "cheetos",
+            precio: 15
+        },
+        {
+            producto: "queso",
+            precio: 40
+        },
+        {
+            producto: "frijoles",
+            precio: 20
+        },
+        {
+            producto: "chiles",
+            precio: 15
+        },
+        {
+            producto: "galletas",
+            precio: 12
+        }
+    ],
+}
+
+/*var falsaBD = [
+    {
+        producto: "papas",
+        precio: 10
+    },
+    {
+        producto: "coca",
+        precio: 16
+    },
+    {
+        producto: "mazapan",
+        precio: 10
+    },
+    {
+        producto: "mantecadas",
+        precio: 15
+    },
+    {
+        producto: "Monster",
+        precio: 30
+    },
+    {
+        producto: ""
+    }
+]
+*/
 
 // Creacion del servidor
 var app = express();
@@ -18,8 +79,9 @@ app.use(bodyParser.json());
 // post request usando webhook
 app.post('/', function (req, res){
 console.log(req.body)
-    // Query de las actions, si la action es "suma" entonces...
-    if (req.body.queryResult.intent.displayName == "suma"){
+
+// Manipulacion del intent suma
+if (req.body.queryResult.intent.displayName == "suma"){
         
         // Query de los numeros
         // Se necesita parsear a tipo flotante (talvez llega en tipo objeto)
@@ -37,6 +99,7 @@ console.log(req.body)
         });
     }
 
+// Manipulacion del intent cantidad
 if (req.body.queryResult.intent.displayName == "cantidad"){
         
         // Query de los numeros
@@ -55,8 +118,32 @@ if (req.body.queryResult.intent.displayName == "cantidad"){
         });
     }
 
+// Manipulacion del intent consultaProducto
 
+if (req.body.queryResult.intent.displayName == "consultaProducto"){
 
+    let consultaproducto = String(req.body.queryResult.parameters.producto);
+    let costo;
+    
+    for(var i = 0; i <= falsaBD.productos.length; i++){
+        if (falsaBD.productos[i].producto == consultaproducto){
+            console.log("FUNCIONAAAA, ten unas " + consultaproducto + " bro");
+            costo = parseFloat(falsaBD.productos[i].precio);
+            break;
+        }
+    }
+    
+    //let costo = parseFloat(falsaBD.producto.precio);
+    
+
+    // Output
+    response = "El producto " + consultaproducto + " cuesta " + costo + "$";
+    console.log(response);
+    res.json({
+        "fulfillmentText": response
+    });
+    
+}
 
 });
 
