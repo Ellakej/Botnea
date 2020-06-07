@@ -48,7 +48,7 @@ if (req.body.queryResult.intent.displayName == "cantidad"){
         let suma1 = num7 * num90;
 
         // Output del bot
-        response = "El total a pagar por tús productos es: " + suma1 + "\n¿Deseas agregar otro producto?";
+        response = "El total por tús productos es: " + suma1 + "\n¿Deseas agregar otro producto?";
         console.log(response)
         res.json({
             "fulfillmentText": response
