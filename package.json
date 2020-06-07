@@ -15,5 +15,13 @@
     "produccion"
   ],
   "author": "Alfa 12",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "twilio": "^3.45.0"
+  },
+  "devDependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "ngrok": "^3.2.7"
+  }
 }
