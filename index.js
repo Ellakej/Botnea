@@ -4,6 +4,16 @@ var ngrok = require('ngrok');
 var app = require('./firebase');
 var firebase = require('firebase/app');
 
+// Para el funcionamiento de los mapas
+const axios = require("axios");
+const dotenv = require("dotenv");
+dotenv.config();
+
+// Credenciales de Twilio
+const authToken = process.env.ACCOUNT_TOKEN;
+const authSID = process.env.ACCOUNT_SID;
+const url = process.env.TWILIO_URL;
+
 // Instancia de la base de datos
 const db = firebase.firestore();
 
@@ -192,14 +202,40 @@ if (req.body.queryResult.intent.displayName == "consultaTienda"){
             + "\nHorarios: " 
             + "\n\tApertura: " + datos.horario.apertura + " hrs"
             + "\n\tCierre: " + datos.horario.cierre + " hrs"
-            + "\n\tDias: " + datos.horario.dias 
-            + "\nUbicacion: " + datos.ubicacion;
+            + "\n\tDias: " + datos.horario.dias;
+            //+ "\nUbicacion: " + datos.ubicacion.latitude;
             console.log(response);
 
+            // Envio de datos a DialowFlow
             res.json({
                 "fulfillmentText": response
             });
+        
+            // Envio del mapa por Twilio directamente
+            const messageBody = {
+                Body: datos.nombreTienda,
+                From: "whatsapp:+14155238886",
+                PersistentAction: "geo:" + datos.ubicacion.latitude + "," + datos.ubicacion.longitude,
+                To: "whatsapp:+5215531103886"       // ARREGLAR URGENTEMENTE
+               };
+            
+            axios
+               .post(url, new URLSearchParams(messageBody), {
+                 auth: {
+                   username: authSID,
+                   password: authToken
+                 }
+               })
+               .then(
+                 response => {
+                   console.log(response.data.sid);
+                 },
+                 error => {
+                   console.log(error);
+                 }
+               );
 
+            
             var datos = null;                      // Eliminado el objeto por seguridad
         });
     })

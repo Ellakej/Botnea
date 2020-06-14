@@ -17,6 +17,8 @@
   "author": "Alfa 12",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
     "firebase": "^7.15.1",
     "firebase-admin": "^8.12.1",
     "twilio": "^3.45.0"
